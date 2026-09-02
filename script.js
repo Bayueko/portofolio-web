@@ -53,7 +53,7 @@ formKontak.addEventListener('submit', async function (e) {
 
 // Elemen Dashboard
 const wadahPesan = document.getElementById('wadah-pesan');
-const btnRefresh = document.getElementById('btn-refresh');
+
 
 // Fungsi untuk mengambil data dari server dan menampilkannya ke layar
 async function muatDaftarPesan() {
@@ -98,8 +98,7 @@ async function muatDaftarPesan() {
 // 1. Jalankan fungsi otomatis saat halaman pertama kali dibuka
 muatDaftarPesan();
 
-// 2. Pasang fungsi ke tombol "Segarkan Data"
-btnRefresh.addEventListener('click', muatDaftarPesan);
+
 
 if (respons.ok) {
             statusTeks.textContent = 'Sukses! Pesan berhasil masuk ke database SQLite.';
@@ -107,3 +106,89 @@ if (respons.ok) {
             formKontak.reset();
             muatDaftarPesan(); // <-- Tambahkan baris ini agar daftar langsung terbarui otomatis setelah kirim pesan
         }
+
+        // URL Backend Vercel
+const BACKEND_URL = 'https://backend-portofolio-rust.vercel.app/api/pesan';
+
+// Elemen DOM
+const formPesan = document.getElementById('form-pesan');
+const containerPesan = document.getElementById('daftar-pesan');
+const statusPesan = document.getElementById('status-pesan');
+
+// 1. Fungsi Mengambil & Menampilkan Data Pesan
+async function muatDaftarPesan() {
+    try {
+        const respons = await fetch(BACKEND_URL);
+        if (!respons.ok) throw new Error('Gagal mengambil data dari server');
+
+        const hasil = await respons.json();
+        const daftarPesan = hasil.data || [];
+
+        // Render ke antarmuka HTML
+        if (daftarPesan.length === 0) {
+            containerPesan.innerHTML = '<p style="color: #64748b; font-style: italic;">Belum ada pesan yang masuk.</p>';
+            return;
+        }
+
+        containerPesan.innerHTML = daftarPesan.map(item => `
+            <div class="card" style="margin-bottom: 1rem; border-left: 4px solid #0284c7; padding: 1rem;">
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.3rem;">
+                    <strong style="color: #0f172a; font-size: 1.05rem;">${item.nama}</strong>
+                    <small style="color: #94a3b8; font-size: 0.8rem;">${new Date(item.waktu).toLocaleDateString('id-ID', { hour: '2-digit', minute: '2-digit' })}</small>
+                </div>
+                <div style="color: #0284c7; font-size: 0.85rem; margin-bottom: 0.5rem;">${item.email}</div>
+                <p style="color: #334155; margin: 0; line-height: 1.5;">${item.pesan}</p>
+            </div>
+        `).join('');
+
+    } catch (err) {
+        console.error('Penyegaran otomatis gagal:', err);
+    }
+}
+
+// 2. Fungsi Mengirim Pesan (Otomatis segarkan setelah sukses)
+if (formPesan) {
+    formPesan.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nama = document.getElementById('nama').value;
+        const email = document.getElementById('email').value;
+        const pesan = document.getElementById('pesan').value;
+
+        statusPesan.textContent = 'Mengirim pesan...';
+        statusPesan.style.color = '#0284c7';
+
+        try {
+            const respons = await fetch(BACKEND_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nama, email, pesan })
+            });
+
+            const hasil = await respons.json();
+
+            if (respons.ok) {
+                statusPesan.textContent = 'Pesan berhasil terkirim!';
+                statusPesan.style.color = '#16a34a';
+                formPesan.reset();
+
+                // Segarkan seketika tanpa perlu tombol
+                muatDaftarPesan();
+            } else {
+                throw new Error(hasil.pesan || 'Gagal menyimpan pesan');
+            }
+        } catch (err) {
+            statusPesan.textContent = 'Gagal mengirim: ' + err.message;
+            statusPesan.style.color = '#dc2626';
+        }
+    });
+}
+
+// 3. Otomasi Siklus Hidup Halaman
+document.addEventListener('DOMContentLoaded', () => {
+    // Muat data saat halaman selesai dibuka
+    muatDaftarPesan();
+
+    // Polling berkala: Memeriksa dan memperbarui pesan baru setiap 15 detik secara otomatis
+    setInterval(muatDaftarPesan, 15000);
+});
