@@ -154,3 +154,48 @@ body.dark-mode .btn-toggle {
     border-color: #374151;
     color: #f8fafc;
 }
+
+/* Badge Skill di About Me */
+.badge {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+}
+
+/* Tag Teknologi di Card Proyek */
+.tag {
+    background-color: #f8fafc;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* Tombol Outline untuk GitHub */
+.btn-outline {
+    background-color: transparent !important;
+    color: #0284c7 !important;
+    border: 1.5px solid #0284c7 !important;
+}
+
+.btn-outline:hover {
+    background-color: #f0f9ff !important;
+}
+
+/* Efek Hover Elegan pada Kartu Proyek */
+.project-card {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #e2e8f0;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+}
