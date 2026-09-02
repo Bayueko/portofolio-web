@@ -52,12 +52,22 @@
             </div>
         </div>
     </section>
-
+<!-- Bagian Form Kontak Interaktif -->
+    <section class="section">
+        <h2>Kirim Pesan ke Server</h2>
+        <form id="form-kontak" style="display: flex; flex-direction: column; gap: 1rem; max-width: 500px;">
+            <input type="text" id="input-nama" placeholder="Nama Anda" required style="padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+            <input type="email" id="input-email" placeholder="Email Anda" style="padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;">
+            <textarea id="input-pesan" placeholder="Tulis pesan..." rows="4" required style="padding: 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;"></textarea>
+            <button type="submit" class="btn" style="border: none; cursor: pointer;">Kirim Pesan</button>
+        </form>
+        <p id="pesan-status" style="margin-top: 1rem; font-weight: 600;"></p>
+    </section>
     <!-- Bagian Footer / Kontak -->
     <footer id="kontak">
-        <p>&copy; 2026 Portofolio Saya. Dibuat dari nol.</p>
+        <p>&copy; 2026 Portofolio Saya. Dibuat dari nol pakai AI.</p>
     </footer>
-!-- Hubungkan file JS sebelum body ditutup -->
+    <!-- Hubungkan file JS sebelum body ditutup -->
     <script src="script.js"></script>
 </body>
 </html>
