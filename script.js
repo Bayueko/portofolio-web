@@ -27,7 +27,7 @@ formKontak.addEventListener('submit', async function (e) {
     statusTeks.style.color = '#0284c7';
 
     try {
-        const respons = await fetch('http://localhost:3000/api/pesan', {
+        const respons = await fetch('https://backend-portofolio-rust.vercel.app/api/pesan', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ async function muatDaftarPesan() {
     wadahPesan.innerHTML = '<p style="color: #64748b;">Mengambil data dari database...</p>';
 
     try {
-        const respons = await fetch('http://localhost:3000/api/pesan');
+        const respons = await fetch('https://backend-portofolio-rust.vercel.app/api/pesan');
         const hasil = await respons.json();
 
         // Jika tidak ada data pesan sama sekali
